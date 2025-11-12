@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Events - Mount Gerizim International School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-red': '#8B0000',
+              'brand-red-dark': '#6e0000',
+              'brand-gold': '#FFD700',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100">
+    <div class="relative flex min-h-screen bg-slate-100">
+        <div id="sidebar" class="bg-brand-red text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+            <a href="admin_dashboard.html" class="text-white flex items-center space-x-2 px-4">
+                <img src="logo.jpg" class="h-8 w-8" alt="Mount Gerizim International School Logo">
+                <span class="text-2xl font-extrabold">MGIS Admin</span>
+            </a>
+
+            <nav>
+                <a href="admin_dashboard.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Dashboard</a>
+                <a href="admin_events.html" class="block py-2.5 px-4 rounded transition duration-200 bg-brand-red-dark">Manage Events</a>
+                <a href="admin_contact.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Contact Info</a>
+            </nav>
+        </div>
+
+        <div class="flex-1 flex flex-col w-full md:w-auto">
+            <header class="bg-white shadow-md p-4 flex justify-between items-center">
+                <button id="menu-button" class="md:hidden text-slate-500 hover:text-brand-red">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+                <h2 class="text-2xl font-semibold text-slate-800">Manage Events</h2>
+                <button id="logout-button" class="text-sm text-red-600 hover:underline">Logout</button>
+            </header>
+
+            <main class="flex-1 p-6 sm:p-8 lg:p-10">
+                <h1 class="text-3xl font-bold text-slate-800 mb-8">Manage Events</h1>
+            
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-1">
+                        <div class="p-6 bg-white rounded-lg shadow-md">
+                            <h2 class="text-xl font-semibold mb-4">Add New Event</h2>
+                            <form id="add-event-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Title</label>
+                                    <input type="text" id="event-title" name="title" required class="w-full px-3 py-2 mt-1 border rounded-md" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Date</label>
+                                    <input type="text" id="event-date" name="date" required placeholder="e.g., JAN 01, 2025" class="w-full px-3 py-2 mt-1 border rounded-md" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Description</label>
+                                    <textarea id="event-description" name="description" rows="4" required class="w-full px-3 py-2 mt-1 border rounded-md"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Image</label>
+                                    <input type="file" id="event-image" name="image" accept="image/*" class="w-full px-3 py-2 mt-1 border rounded-md" />
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button type="submit" class="flex-1 py-2 text-white bg-brand-red rounded-md hover:bg-brand-red-dark transition">Add Event</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+    
+                    <div class="md:col-span-2">
+                        <div id="events-list" class="space-y-4">
+                            <!-- Events will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="admin_script.js"></script>
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        });
+
+        document.getElementById('logout-button').addEventListener('click', function() {
+            // This is a simplified logout. For a real application, you would handle this on the server-side.
+            window.location.href = 'admin.html';
+        });
+    </script>
+</body>
+</html>

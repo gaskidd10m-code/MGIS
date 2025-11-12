@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events - Mount Gerizim International School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-red': '#8B0000',
+              'brand-red-dark': '#6e0000',
+              'brand-gold': '#FFD700',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <a href="index2.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="flex items-center space-x-2">
+                        <img src="logo.jpg" class="h-15 w-20" alt="Mount Gerizim International School Logo">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg leading-tight text-brand-red">MOUNT GERIZIM</span>
+                            <span class="font-semibold text-sm leading-tight text-slate-700">INTERNATIONAL SCHOOL</span>
+                        </div>
+                    </div>
+                </a>
+                <button
+                    id="mobile-menu-button"
+                    type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-slate-500 rounded-lg md:hidden hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                    aria-controls="navbar-default"
+                    aria-expanded="false"
+                >
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-full h-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+                <div class="hidden w-full md:block md:w-auto" id="navbar-default" data-visible="false">
+                    <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-100 rounded-lg bg-slate-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+                        <li><a href="index2.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">Home</a></li>
+                        <li><a href="about.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">About Us</a></li>
+                        <li><a href="programs.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">Programs</a></li>
+                        <li><a href="staff.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">Staff</a></li>
+                        <li><a href="gallery.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">Gallery</a></li>
+                        <li><a href="events.html" class="block py-2 px-3 text-white bg-brand-red rounded md:bg-transparent md:text-brand-red md:p-0" aria-current="page">Events</a></li>
+                        <li><a href="contact.html" class="block py-2 px-3 text-slate-700 rounded hover:bg-brand-red hover:text-white md:hover:bg-transparent md:border-0 md:hover:text-brand-red md:p-0">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow">
+        <div class="bg-white py-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-extrabold text-brand-red">Upcoming Events</h1>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
+                        Stay up-to-date with our school's calendar of events, activities, and important dates.
+                    </p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-12">
+                    <!-- Events will be dynamically inserted here -->
+                </div>
+                 <div class="text-center mt-16">
+                    <p class="text-slate-500">More events coming soon. Please check back later!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brand-red text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- About Section -->
+                <div>
+                    <h2 class="font-bold text-xl mb-4">Mount Gerizim Int. School</h2>
+                    <p class="text-red-100 text-sm">Providing a welcoming, happy, and safe environment for the development of well-rounded, confident, and responsible individuals.</p>
+                    <p class="text-red-100 text-sm mt-2">Motto: Intellect with Character</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index2.html" class="hover:text-brand-gold transition-colors text-sm">Home</a></li>
+                        <li><a href="about.html" class="hover:text-brand-gold transition-colors text-sm">About Us</a></li>
+                        <li><a href="programs.html" class="hover:text-brand-gold transition-colors text-sm">Our Programs</a></li>
+                        <li><a href="contact.html" class="hover:text-brand-gold transition-colors text-sm">Contact</a></li>
+                         <li><a href="admin.html" class="hover:text-brand-gold transition-colors text-sm">Admin Panel</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 mt-1 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-red-100 text-sm">Kasoa, Obom-Domeabra</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            <a href="mailto:info@mountgerizim.com" class="text-red-100 hover:text-brand-gold transition-colors text-sm">mt.gerizimsch@gmail.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            <div class="flex flex-col">
+                                <a href="tel:0245084424" class="text-red-100 hover:text-brand-gold transition-colors text-sm">0245084424</a>
+                                <a href="tel:0240302050" class="text-red-100 hover:text-brand-gold transition-colors text-sm">0240302050</a>
+                                <a href="tel:0543429465" class="text-red-100 hover:text-brand-gold transition-colors text-sm">0543429465</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Developer Info -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Developer Info</h3>
+                    <img src="logo2.png" class="h-16" alt="Bytecode Logo">
+                    <p class="text-red-100 text-sm mt-2">My name is Prince Benedict Ahovey, and I'm the passionate creator behind this web application.</p>
+                    <p class="text-red-100 text-sm mt-2">For any inquiries, feel free to reach out to me at:</p>
+                    <a href="mailto:ahoveyprincebenedict@gmail.com" class="text-sm text-red-100 hover:text-brand-gold transition-colors break-all">ahoveyprincebenedict@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="mt-12 border-t border-red-700 pt-8 text-center text-red-200">
+                <p>&copy; 2025 Mount Gerizim International School. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

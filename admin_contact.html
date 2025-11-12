@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Contact - Mount Gerizim International School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-red': '#8B0000',
+              'brand-red-dark': '#6e0000',
+              'brand-gold': '#FFD700',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100">
+    <div class="relative flex min-h-screen bg-slate-100">
+        <div id="sidebar" class="bg-brand-red text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+            <a href="admin_dashboard.html" class="text-white flex items-center space-x-2 px-4">
+                <img src="logo.jpg" class="h-8 w-8" alt="Mount Gerizim International School Logo">
+                <span class="text-2xl font-extrabold">MGIS Admin</span>
+            </a>
+
+            <nav>
+                <a href="admin_dashboard.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Dashboard</a>
+                <a href="admin_events.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Manage Events</a>
+                <a href="admin_contact.html" class="block py-2.5 px-4 rounded transition duration-200 bg-brand-red-dark">Contact Info</a>
+            </nav>
+        </div>
+
+        <div class="flex-1 flex flex-col w-full md:w-auto">
+            <header class="bg-white shadow-md p-4 flex justify-between items-center">
+                <button id="menu-button" class="md:hidden text-slate-500 hover:text-brand-red">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+                <h2 class="text-2xl font-semibold text-slate-800">Manage Contact</h2>
+                <button id="logout-button" class="text-sm text-red-600 hover:underline">Logout</button>
+            </header>
+
+            <main class="flex-1 p-6 sm:p-8 lg:p-10">
+                <h1 class="text-3xl font-bold text-slate-800 mb-8">Manage Contact Information</h1>
+
+                <div class="p-6 bg-white rounded-lg shadow-md mb-8">
+                    <h2 class="text-xl font-semibold text-slate-800 mb-4">Contact Details</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="block text-sm font-medium text-slate-700">Location</p>
+                            <p class="w-full px-3 py-2 mt-1">Domeabra Asabaham, Kasoa</p>
+                        </div>
+                         <div>
+                            <p class="block text-sm font-medium text-slate-700">Email</p>
+                            <p class="w-full px-3 py-2 mt-1">mt.gerizimsch@gmail.com</p>
+                        </div>
+                         <div>
+                            <p class="block text-sm font-medium text-slate-700">Phone Numbers</p>
+                            <p class="w-full px-3 py-2 mt-1">0245084424<br>0240302050<br>0543429465</p>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </main>
+        </div>
+    </div>
+    <script src="admin_script.js"></script>
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        });
+
+        document.getElementById('logout-button').addEventListener('click', function() {
+            // This is a simplified logout. For a real application, you would handle this on the server-side.
+            window.location.href = 'admin.html';
+        });
+    </script>
+</body>
+</html>

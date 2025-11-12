@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MGIS ADMIN PANEL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-red': '#8B0000',
+              'brand-red-dark': '#6e0000',
+              'brand-gold': '#FFD700',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100">
+    <div id="login-page">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-xl">
+                <h2 class="text-3xl font-bold text-center text-brand-red">Admin Panel Login</h2>
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Username</label>
+                        <input type="text" id="username" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Password</label>
+                        <input type="password" id="password" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red" />
+                    </div>
+                    <p id="error" class="text-sm text-center text-red-600"></p>
+                    <button type="submit" class="w-full py-2.5 text-white bg-brand-red rounded-md hover:bg-brand-red-dark transition-all font-semibold">Login</button>
+                </form>
+                <div class="text-center mt-4">
+                    <a href="index2.html" class="text-sm text-brand-red hover:underline">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <div class="relative flex min-h-screen bg-slate-100">
+            <div id="sidebar" class="bg-brand-red text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+                <a href="admin_dashboard.html" class="text-white flex items-center space-x-2 px-4">
+                                    <img src="logo.jpg" class="h-8 w-8" alt="Mount Gerizim International School Logo">                    <span class="text-2xl font-extrabold">MGIS ADMIN PANEL</span>
+                </a>
+
+                <nav>
+                    <a href="admin_dashboard.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Dashboard</a>
+                    <a href="admin_events.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Manage Events</a>
+                    <a href="admin_contact.html" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-brand-red-dark">Contact Info</a>
+                </nav>
+            </div>
+
+            <div class="flex-1 flex flex-col w-full md:w-auto">
+                <header class="bg-white shadow-md p-4 flex justify-between items-center">
+                    <button id="menu-button" class="md:hidden text-slate-500 hover:text-brand-red">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                    <h2 class="text-2xl font-semibold text-slate-800">Dashboard</h2>
+                    <button id="logout-button" class="text-sm text-red-600 hover:underline">Logout</button>
+                </header>
+
+                <main class="flex-1 p-6 sm:p-8 lg:p-10">
+                    <!-- Content will be loaded here -->
+                </main>
+            </div>
+        </div>
+    </div>
+
+        <script>
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const error = document.getElementById('error');
+
+                if (username === 'MGIS' && password === '@MGIS1957') {
+                    window.location.href = 'admin_dashboard.html';
+                } else {
+                    error.textContent = 'Invalid username or password';
+                }
+            });
+
+            document.getElementById('logout-button').addEventListener('click', function() {
+                window.location.href = 'admin.html';
+            });
+
+            document.getElementById('menu-button').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            });
+        </script>
+</body>
+</html>
