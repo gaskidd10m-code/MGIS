@@ -1,29 +1,18 @@
-const fs = require('fs');
-const path = require('path');
+const { kv } = require('@vercel/kv');
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(405).send('Method Not Allowed');
     }
 
-    let body = '';
-    req.on('data', chunk => {
-        body += chunk.toString();
-    });
+    // Vercel automatically parses the body for Node.js runtimes
+    const body = req.body;
 
-    req.on('end', () => {
-        try {
-            const data = JSON.parse(body);
-            const filePath = path.resolve(__dirname, '..', 'events.json');
-            fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8', (err) => {
-                if (err) {
-                    res.status(500).send('Error writing events file');
-                    return;
-                }
-                res.status(200).send('Events updated successfully');
-            });
-        } catch (e) {
-            res.status(400).send('Invalid JSON');
-        }
-    });
+    try {
+        await kv.set('events', body);
+        res.status(200).json({ message: 'Events updated successfully' });
+    } catch (error) {
+        console.error('Error saving events to KV store:', error);
+        res.status(500).send('Error saving events');
+    }
 };
