@@ -10,31 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Event Handling ---
-    const events = JSON.parse(localStorage.getItem('events')) || [];
+    async function fetchAndRenderEvents() {
+        const eventsContainer = document.querySelector('.max-w-4xl.mx-auto.space-y-12');
+        if (!eventsContainer) return;
 
-    const eventsContainer = document.querySelector('.max-w-4xl.mx-auto.space-y-12');
-
-    if (eventsContainer) {
-        eventsContainer.innerHTML = ''; // Clear static content
-        if (events.length === 0) {
-            eventsContainer.innerHTML = '<p class="text-center text-slate-500">No events scheduled at this time. Please check back later.</p>';
-        } else {
-            events.forEach(event => {
-                const eventElement = document.createElement('div');
-                eventElement.className = 'flex bg-slate-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300';
-                eventElement.innerHTML = `
-                    <div class="w-1/3">
-                        <img class="w-full h-full object-cover" src="${event.imageUrl}" alt="${event.title}" />
-                    </div>
-                    <div class="w-2/3 p-4 flex flex-col justify-center">
-                        <p class="text-sm font-semibold text-brand-red uppercase tracking-wider">${event.date}</p>
-                        <h3 class="text-lg font-bold text-slate-800 mt-1 mb-2">${event.title}</h3>
-                        <p class="text-slate-600 text-sm">${event.description}</p>
-                    </div>
-                `;
-                eventsContainer.appendChild(eventElement);
-            });
+        try {
+            const response = await fetch('/api/events');
+            if (!response.ok) throw new Error('Failed to fetch events.');
+            
+            const events = await response.json();
+            
+            eventsContainer.innerHTML = ''; 
+            if (events.length === 0) {
+                eventsContainer.innerHTML = '<p class="text-center text-slate-500">No events scheduled at this time. Please check back later.</p>';
+            } else {
+                events.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'flex bg-slate-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300';
+                    eventElement.innerHTML = `
+                        <div class="w-1/3">
+                            <img class="w-full h-full object-cover" src="${event.imageUrl}" alt="${event.title}" />
+                        </div>
+                        <div class="w-2/3 p-4 flex flex-col justify-center">
+                            <p class="text-sm font-semibold text-brand-red uppercase tracking-wider">${event.date}</p>
+                            <h3 class="text-lg font-bold text-slate-800 mt-1 mb-2">${event.title}</h3>
+                            <p class="text-slate-600 text-sm">${event.description}</p>
+                        </div>
+                    `;
+                    eventsContainer.appendChild(eventElement);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            eventsContainer.innerHTML = '<p class="text-center text-red-500">Could not load events. Please try refreshing the page.</p>';
         }
     }
 
@@ -66,4 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initial Fetch
+    fetchAndRenderEvents();
 });

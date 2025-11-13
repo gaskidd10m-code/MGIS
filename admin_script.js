@@ -1,61 +1,66 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Event Data (managed in localStorage) ---
-    let events = JSON.parse(localStorage.getItem('events')) || [
-        {
-            date: 'SEP 15, 2024',
-            title: 'Annual Sports Day',
-            description: 'A day of fun, competition, and teamwork.',
-            imageUrl: 'logo.jpg'
-        },
-        {
-            date: 'OCT 20, 2024',
-            title: 'Parent-Teacher Conference',
-            description: 'Discuss student progress and collaborate for success.',
-            imageUrl: 'logo.jpg'
-        },
-        {
-            date: 'NOV 22, 2024',
-            title: 'Annual Science Fair',
-            description: 'Explore amazing projects by our talented students.',
-            imageUrl: 'logo.jpg'
-        }
-    ];
+document.addEventListener('DOMContentLoaded', async () => {
+    let events = [];
 
-    function saveEvents() {
-        localStorage.setItem('events', JSON.stringify(events));
+    async function fetchEvents() {
+        try {
+            const response = await fetch('/api/events');
+            if (!response.ok) throw new Error('Failed to fetch events.');
+            events = await response.json();
+            renderAdminEvents();
+            updateDashboard();
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            const eventsListContainer = document.querySelector('#events-list');
+            if (eventsListContainer) {
+                eventsListContainer.innerHTML = '<p class="text-center text-red-500">Failed to load events. Please try again later.</p>';
+            }
+        }
     }
 
-    // --- Function to render events in the admin panel ---
+    async function saveEvents() {
+        try {
+            const response = await fetch('/api/events', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(events),
+            });
+            if (!response.ok) throw new Error('Failed to save events.');
+        } catch (error) {
+            console.error('Error saving events:', error);
+            alert('Failed to save events. Your changes may not be persisted.');
+        }
+    }
+
     function renderAdminEvents() {
         const eventsListContainer = document.querySelector('#events-list');
-        if (eventsListContainer) {
-            eventsListContainer.innerHTML = ''; // Clear static content
-            if (events.length === 0) {
-                eventsListContainer.innerHTML = '<p class="text-center text-slate-500">No events found.</p>';
-            }
-            else {
-                events.forEach((event, index) => {
-                    const eventElement = document.createElement('div');
-                    eventElement.className = 'p-4 bg-white rounded-lg shadow-md flex justify-between items-center';
-                    eventElement.innerHTML = `
-                        <div>
-                            <p class="font-bold text-slate-800">${event.title}</p>
-                            <p class="text-sm text-slate-500">${event.date}</p>
-                        </div>
-                        <div class="space-x-2 flex-shrink-0">
-                            <button class="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded hover:bg-blue-200" onclick="editEvent(${index})">Edit</button>
-                            <button class="px-3 py-1 text-sm text-red-600 bg-red-100 rounded hover:bg-red-200" onclick="deleteEvent(${index})">Delete</button>
-                        </div>
-                    `;
-                    eventsListContainer.appendChild(eventElement);
-                });
-            }
+        if (!eventsListContainer) return;
+
+        eventsListContainer.innerHTML = '';
+        if (events.length === 0) {
+            eventsListContainer.innerHTML = '<p class="text-center text-slate-500">No events found.</p>';
+            return;
         }
+
+        events.forEach((event, index) => {
+            const eventElement = document.createElement('div');
+            eventElement.className = 'p-4 bg-white rounded-lg shadow-md flex justify-between items-center';
+            eventElement.innerHTML = `
+                <div>
+                    <p class="font-bold text-slate-800">${event.title}</p>
+                    <p class="text-sm text-slate-500">${event.date}</p>
+                </div>
+                <div class="space-x-2 flex-shrink-0">
+                    <button class="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded hover:bg-blue-200" onclick="editEvent(${index})">Edit</button>
+                    <button class="px-3 py-1 text-sm text-red-600 bg-red-100 rounded hover:bg-red-200" onclick="deleteEvent(${index})">Delete</button>
+                </div>
+            `;
+            eventsListContainer.appendChild(eventElement);
+        });
     }
 
-    window.deleteEvent = function(index) {
+    window.deleteEvent = async function(index) {
         events.splice(index, 1);
-        saveEvents();
+        await saveEvents();
         renderAdminEvents();
         updateDashboard();
     }
@@ -63,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.editEvent = function(index) {
         const event = events[index];
         const eventElement = document.querySelector(`#events-list > div:nth-child(${index + 1})`);
+        if (!eventElement) return;
 
         eventElement.innerHTML = `
             <div class="w-full">
@@ -77,24 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    window.saveEdit = function(index) {
+    window.saveEdit = async function(index) {
         const newTitle = document.getElementById(`edit-title-${index}`).value;
         const newDate = document.getElementById(`edit-date-${index}`).value;
         const newDescription = document.getElementById(`edit-description-${index}`).value;
 
         if (newTitle && newDate && newDescription) {
-            events[index] = {
-                ...events[index],
-                title: newTitle,
-                date: newDate,
-                description: newDescription,
-            };
-            saveEvents();
+            events[index] = { ...events[index], title: newTitle, date: newDate, description: newDescription };
+            await saveEvents();
             renderAdminEvents();
         }
     }
 
-    // --- Function to update dashboard stats ---
     function updateDashboard() {
         const totalEventsElement = document.getElementById('total-events');
         if (totalEventsElement) {
@@ -102,58 +102,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Event Listeners ---
     const addEventForm = document.getElementById('add-event-form');
     if (addEventForm) {
-        addEventForm.addEventListener('submit', (e) => {
+        addEventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const titleInput = document.getElementById('event-title');
-            const dateInput = document.getElementById('event-date');
-            const descriptionInput = document.getElementById('event-description');
+            const title = document.getElementById('event-title').value.trim();
+            const date = document.getElementById('event-date').value.trim();
+            const description = document.getElementById('event-description').value.trim();
             const imageInput = document.getElementById('event-image');
-
-            const title = titleInput.value.trim();
-            const date = dateInput.value.trim();
-            const description = descriptionInput.value.trim();
             const imageFile = imageInput.files[0];
 
-            if (title && date && description) {
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        events.push({
-                            title,
-                            date,
-                            description,
-                            imageUrl: e.target.result
-                        });
-                        saveEvents();
-                        renderAdminEvents();
-                        updateDashboard();
-                        addEventForm.reset();
-                        alert('Event added successfully!');
-                    };
-                    reader.readAsDataURL(imageFile);
-                } else {
-                    events.push({
-                        title,
-                        date,
-                        description,
-                        imageUrl: 'logo.jpg'
-                    });
-                    saveEvents();
-                    renderAdminEvents();
-                    updateDashboard();
-                    addEventForm.reset();
-                    alert('Event added successfully!');
-                }
-            } else {
+            if (!title || !date || !description) {
                 alert('Please fill in all fields.');
+                return;
+            }
+
+            let imageUrl = 'logo.jpg'; // Default image
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    imageUrl = e.target.result;
+                    await addNewEvent(title, date, description, imageUrl);
+                    addEventForm.reset();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                await addNewEvent(title, date, description, imageUrl);
+                addEventForm.reset();
             }
         });
     }
 
-    // --- Initial Render ---
-    renderAdminEvents();
-    updateDashboard();
+    async function addNewEvent(title, date, description, imageUrl) {
+        events.push({ title, date, description, imageUrl });
+        await saveEvents();
+        renderAdminEvents();
+        updateDashboard();
+        alert('Event added successfully!');
+    }
+
+    // Initial Fetch
+    fetchEvents();
 });
