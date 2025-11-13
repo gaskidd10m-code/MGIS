@@ -6,13 +6,16 @@ module.exports = async (req, res) => {
     const blobUrl = `${process.env.BLOB_URL}/events.json`;
 
     try {
-        const blobInfo = await head(blobUrl).catch(error => {
-            // head throws a BlobNotFoundError for 404s, so we catch it by name
+        let blobInfo;
+        try {
+            blobInfo = await head(blobUrl);
+        } catch (error) {
             if (error.name === 'BlobNotFoundError') {
-                return null;
+                blobInfo = null;
+            } else {
+                throw error;
             }
-            throw error; // re-throw other errors
-        });
+        }
 
         if (blobInfo) {
             // Blob exists, fetch and return it
