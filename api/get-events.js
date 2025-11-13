@@ -7,8 +7,8 @@ module.exports = async (req, res) => {
 
     try {
         const blobInfo = await head(blobUrl).catch(error => {
-            // head throws an error for 404 not found, so we catch it and return null
-            if (error.status === 404) {
+            // head throws a BlobNotFoundError for 404s, so we catch it by name
+            if (error.name === 'BlobNotFoundError') {
                 return null;
             }
             throw error; // re-throw other errors
