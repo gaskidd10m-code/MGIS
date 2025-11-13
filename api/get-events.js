@@ -33,7 +33,8 @@ module.exports = async (req, res) => {
                 // Put the file content into the blob store
                 await put('events.json', fileContent, {
                     access: 'public',
-                    contentType: 'application/json'
+                    contentType: 'application/json',
+                    cacheControlMaxAge: 0
                 });
                 return res.status(200).json(JSON.parse(fileContent));
             } catch (fileError) {
@@ -42,7 +43,8 @@ module.exports = async (req, res) => {
                     const emptyEvents = '[]';
                     await put('events.json', emptyEvents, {
                         access: 'public',
-                        contentType: 'application/json'
+                        contentType: 'application/json',
+                        cacheControlMaxAge: 0
                     });
                     return res.status(200).json([]);
                 } else {

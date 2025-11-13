@@ -11,7 +11,8 @@ module.exports = async (req, res) => {
         const { url } = await put('events.json', JSON.stringify(body, null, 2), {
             access: 'public',
             contentType: 'application/json',
-            allowOverwrite: true
+            allowOverwrite: true,
+            cacheControlMaxAge: 0
         });
         res.status(200).json({ message: 'Events updated successfully', url });
     } catch (error) {
