@@ -1,57 +1,32 @@
-const { head, put } = require('@vercel/blob');
+const { get } = require('@vercel/edge-config');
 const fs = require('fs').promises;
 const path = require('path');
 
 module.exports = async (req, res) => {
-    const blobUrl = `${process.env.BLOB_URL}/events.json`;
-
     try {
-        let blobInfo;
-        try {
-            blobInfo = await head(blobUrl);
-        } catch (error) {
-            if (error.name === 'BlobNotFoundError') {
-                blobInfo = null;
-            } else {
-                throw error;
-            }
-        }
+        let events = await get('events');
 
-        if (blobInfo) {
-            // Blob exists, fetch and return it
-            const response = await fetch(blobUrl);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch blob: ${response.statusText}`);
-            }
-            const events = await response.json();
-            return res.status(200).json(events);
-        } else {
-            // Blob doesn't exist, seed it from the file
+        if (!events) {
+            // If no events in Edge Config, try to read from the JSON file
+            // This is for initial seeding, but Edge Config cannot be written to from here.
             const filePath = path.join(process.cwd(), 'public', 'events.json');
             try {
                 const fileContent = await fs.readFile(filePath, 'utf8');
-                // Put the file content into the blob store
-                await put('events.json', fileContent, {
-                    access: 'public',
-                    contentType: 'application/json',
-                    cacheControlMaxAge: 0
-                });
-                return res.status(200).json(JSON.parse(fileContent));
+                events = JSON.parse(fileContent);
+                // IMPORTANT: Edge Config cannot be written to from a serverless function directly.
+                // The user will need to manually update their Edge Config with this data
+                // (e.g., by adding a key 'events' with the content of public/events.json).
             } catch (fileError) {
                 if (fileError.code === 'ENOENT') {
-                    // File doesn't exist, create an empty blob
-                    const emptyEvents = '[]';
-                    await put('events.json', emptyEvents, {
-                        access: 'public',
-                        contentType: 'application/json',
-                        cacheControlMaxAge: 0
-                    });
-                    return res.status(200).json([]);
+                    console.log('events.json not found, returning empty array.');
+                    events = [];
                 } else {
                     throw fileError;
                 }
             }
         }
+
+        res.status(200).json(events);
     } catch (error) {
         console.error('Error in get-events API:', error);
         res.status(500).send('An error occurred while retrieving events.');
