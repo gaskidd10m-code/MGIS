@@ -1,33 +1,52 @@
-const { kv } = require('@vercel/kv');
+const { head, put } = require('@vercel/blob');
 const fs = require('fs').promises;
 const path = require('path');
 
 module.exports = async (req, res) => {
-    try {
-        let events = await kv.get('events');
+    const blobUrl = `${process.env.BLOB_URL}/events.json`;
 
-        if (events === null || events === undefined) {
-            // If no events in KV store, try to read from the JSON file
+    try {
+        const blobInfo = await head(blobUrl).catch(error => {
+            // head throws an error for 404 not found, so we catch it and return null
+            if (error.status === 404) {
+                return null;
+            }
+            throw error; // re-throw other errors
+        });
+
+        if (blobInfo) {
+            // Blob exists, fetch and return it
+            const response = await fetch(blobUrl);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch blob: ${response.statusText}`);
+            }
+            const events = await response.json();
+            return res.status(200).json(events);
+        } else {
+            // Blob doesn't exist, seed it from the file
             const filePath = path.join(process.cwd(), 'public', 'events.json');
             try {
                 const fileContent = await fs.readFile(filePath, 'utf8');
-                events = JSON.parse(fileContent);
-                // Store the initial events in the KV store for next time
-                await kv.set('events', events);
+                // Put the file content into the blob store
+                await put('events.json', fileContent, {
+                    access: 'public',
+                    contentType: 'application/json'
+                });
+                return res.status(200).json(JSON.parse(fileContent));
             } catch (fileError) {
-                // If the file doesn't exist, initialize with an empty array
                 if (fileError.code === 'ENOENT') {
-                    console.log('events.json not found, initializing with empty array.');
-                    events = [];
-                    await kv.set('events', events);
+                    // File doesn't exist, create an empty blob
+                    const emptyEvents = '[]';
+                    await put('events.json', emptyEvents, {
+                        access: 'public',
+                        contentType: 'application/json'
+                    });
+                    return res.status(200).json([]);
                 } else {
-                    // For other file-related errors, re-throw to be caught by the outer catch
                     throw fileError;
                 }
             }
         }
-
-        res.status(200).json(events);
     } catch (error) {
         console.error('Error in get-events API:', error);
         res.status(500).send('An error occurred while retrieving events.');
