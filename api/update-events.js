@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
             contentType: 'application/json'
         });
         res.status(200).json({ message: 'Events updated successfully', url });
-    } catch (error)
+    } catch (error) {
         console.error('Error uploading events to blob store:', error);
         res.status(500).send('Error saving events');
     }
