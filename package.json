@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/gaskidd10m-code/MGIS#readme",
   "dependencies": {
-    "@vercel/edge-config": "^1.4.3"
+    "@vercel/kv": "^3.0.0"
   }
 }

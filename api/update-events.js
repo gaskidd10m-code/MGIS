@@ -1,15 +1,17 @@
-// Edge Config is designed for high-read, low-write scenarios.
-// Writing to Edge Config from a serverless function is not directly supported
-// via a simple 'set' method like other storage solutions.
-// Updates typically require using the Vercel API, which is not suitable for
-// frequent, real-time updates from an admin panel.
+const { kv } = require('@vercel/kv');
 
 module.exports = async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(405).send('Method Not Allowed');
     }
 
-    // For Edge Config, updates must be done manually via the Vercel dashboard
-    // or programmatically via the Vercel API (which is complex for this use case).
-    res.status(501).send('Writing to Edge Config is not supported from this function. Please update manually via Vercel dashboard.');
+    const body = req.body;
+
+    try {
+        await kv.set('events', body);
+        res.status(200).json({ message: 'Events updated successfully' });
+    } catch (error) {
+        console.error('Error saving events to KV store:', error);
+        res.status(500).send('Error saving events');
+    }
 };
