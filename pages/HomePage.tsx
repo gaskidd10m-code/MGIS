@@ -104,10 +104,26 @@ const Sidebar = () => (
     <div className="bg-gray-50 p-6 border-t-4 border-black shadow-sm">
       <h4 className="font-bold uppercase text-xs tracking-widest mb-6 text-gray-400">Trending Now</h4>
       <ol className="list-decimal list-inside space-y-4 font-serif text-lg">
-        <li className="font-bold cursor-pointer hover:text-red-700 transition-colors leading-tight pl-2">The 10 richest people in Tech</li>
-        <li className="font-bold cursor-pointer hover:text-red-700 transition-colors leading-tight pl-2">Why everyone is moving to Nebraska</li>
-        <li className="font-bold cursor-pointer hover:text-red-700 transition-colors leading-tight pl-2">New diet trends: Eating air?</li>
-        <li className="font-bold cursor-pointer hover:text-red-700 transition-colors leading-tight pl-2">Election results explained</li>
+        <li className="pl-2">
+          <Link to="/article/the-10-richest-people-in-tech-2026-edition" className="font-bold hover:text-red-700 transition-colors leading-tight block">
+            The 10 richest people in Tech
+          </Link>
+        </li>
+        <li className="pl-2">
+          <Link to="/article/why-everyone-is-moving-to-nebraska-and-its-not-for-the-corn" className="font-bold hover:text-red-700 transition-colors leading-tight block">
+            Why everyone is moving to Nebraska
+          </Link>
+        </li>
+        <li className="pl-2">
+          <Link to="/article/new-diet-trend-eating-air-the-dangerous-rise-of-breatharianism-20" className="font-bold hover:text-red-700 transition-colors leading-tight block">
+            New diet trends: Eating air?
+          </Link>
+        </li>
+        <li className="pl-2">
+          <Link to="/article/global-election-results-2026-a-shift-toward-hyper-localization" className="font-bold hover:text-red-700 transition-colors leading-tight block">
+            Election results explained
+          </Link>
+        </li>
       </ol>
     </div>
 
