@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Article, Comment } from '../types';
 import { api } from '../services/api';
 
@@ -187,6 +188,11 @@ export const ArticlePage = () => {
 
   return (
     <article className="max-w-7xl mx-auto relative">
+      <Helmet>
+        <title>{article.title} - Gossip Gazette</title>
+        <meta name="description" content={article.excerpt} />
+        <link rel="canonical" href={`https://gossipgazette.online/article/${article.slug}`} />
+      </Helmet>
       {/* Admin Quick Edit Button */}
       {isAdmin && (
         <div className="fixed bottom-8 right-8 z-50">

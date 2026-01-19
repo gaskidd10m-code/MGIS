@@ -251,6 +251,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return await handleCategories(req, res, path);
         } else if (path.startsWith('/comments')) {
             return await handleComments(req, res, path);
+        } else if (path.startsWith('/sitemap')) {
+            return await handleSitemap(req, res);
         } else if (path.startsWith('/settings')) {
             return await handleSettings(req, res, path);
         } else {
@@ -393,4 +395,44 @@ async function handleSettings(req: VercelRequest, res: VercelResponse, path: str
     }
 
     res.status(404).json({ error: 'Not found' });
+}
+
+// --- SITEMAP HANDLER ---
+async function handleSitemap(req: VercelRequest, res: VercelResponse) {
+    const articles = await db.getArticles();
+    const domain = 'https://gossipgazette.online';
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>${domain}/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>${domain}/search</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>${domain}/privacy-policy</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>${domain}/terms-of-service</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    ${articles.map(article => `
+    <url>
+        <loc>${domain}/article/${article.slug}</loc>
+        <lastmod>${new Date(article.publishedAt).toISOString()}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>`).join('')}
+</urlset>`;
+
+    res.setHeader('Content-Type', 'application/xml');
+    res.send(xml);
 }

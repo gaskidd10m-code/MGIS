@@ -111,23 +111,30 @@ const articles = [
 
 // Helper to download image
 const downloadImage = (url: string, filename: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const publicDir = path.join(process.cwd(), 'public');
         const filepath = path.join(publicDir, filename);
 
         const file = fs.createWriteStream(filepath);
-        https.get(url, (response) => {
+        const request = https.get(url, (response) => {
+            if (response.statusCode !== 200) {
+                console.warn(`Failed to download image (status ${response.statusCode}), using placeholder.`);
+                fs.unlink(filepath, () => { });
+                resolve('/placeholder.jpg'); // Fallback
+                return;
+            }
             response.pipe(file);
             file.on('finish', () => {
                 file.close();
                 console.log(`Downloaded: ${filename}`);
                 resolve(`/${filename}`);
             });
-        }).on('error', (err) => {
+        });
+
+        request.on('error', (err) => {
             fs.unlink(filepath, () => { });
             console.error(`Error downloading ${filename}:`, err.message);
-            // Fallback to placeholder if download fails, but let's hope it works
-            resolve('/placeholder.jpg');
+            resolve('/placeholder.jpg'); // Fallback
         });
     });
 };
@@ -149,8 +156,10 @@ async function addTrendingArticles() {
                 continue;
             }
 
-            // 2. Download Image
-            await downloadImage(article.imageUrl, article.imageName);
+            console.log(`Processing: ${article.title}...`);
+
+            // 2. Download Image (Fail-safe)
+            const imagePath = await downloadImage(article.imageUrl, article.imageName);
 
             const slug = slugify(article.title);
 
@@ -162,17 +171,21 @@ async function addTrendingArticles() {
                 continue;
             }
 
+            // Use crypto.randomUUID() for ID generation (Node.js 14+)
+            const id = crypto.randomUUID();
+
             await pool.query(
                 `INSERT INTO articles 
-        (id, title, slug, excerpt, content, cover_image, category_id, category_name, author_name, published_at, created_at, updated_at)
+        (id, title, slug, excerpt, content, cover_image, category_id, category_name, author_name, published_at)
         VALUES 
-        (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, 'Gossip Staff', NOW(), NOW(), NOW())`,
+        ($1, $2, $3, $4, $5, $6, $7, $8, 'Gossip Staff', NOW())`,
                 [
+                    id,
                     article.title,
                     slug,
                     article.excerpt,
                     article.content,
-                    `/${article.imageName}`,
+                    imagePath,
                     categoryId,
                     article.categoryName
                 ]
@@ -182,7 +195,7 @@ async function addTrendingArticles() {
 
         console.log('Done!');
     } catch (err) {
-        console.error('Error:', err);
+        console.error('Fatal Error:', err);
     } finally {
         await pool.end();
     }

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
 import { ArticlePage } from './pages/ArticlePage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { SearchPage } from './pages/SearchPage';
 import { LoginPage } from './pages/LoginPage';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsOfService } from './pages/TermsOfService';
 import { api } from './services/api';
 import { Category } from './types';
 
@@ -18,17 +21,21 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <HashRouter>
-      <Layout categories={categories}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/article/:slug" element={<ArticlePage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </Layout>
-    </HashRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Layout categories={categories}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/article/:slug" element={<ArticlePage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 };
 

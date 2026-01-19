@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Article, Category } from '../types';
 import { api } from '../services/api';
 
@@ -247,6 +248,11 @@ export const HomePage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Gossip Gazette - Latest News & Updates</title>
+        <meta name="description" content="Your daily dose of the latest gossip, news, and updates from around the world." />
+        <link rel="canonical" href="https://gossipgazette.online/" />
+      </Helmet>
       {/* Mobile Page Title */}
       <div className="md:hidden mb-6">
         <h1 className="font-serif font-black text-3xl border-b-4 border-black pb-2 inline-block">Home Page</h1>
