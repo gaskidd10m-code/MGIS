@@ -170,8 +170,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
             <Link to={isAuthenticated ? "/admin" : "/login"} className="ml-2 hover:opacity-100 opacity-50 grayscale hover:grayscale-0 transition-all text-base no-underline" title="Staff Login">🔐</Link>
           </p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <Link to="#" className="hover:text-gray-400">Privacy Policy</Link>
-            <Link to="#" className="hover:text-gray-400">Terms of Service</Link>
+            <Link to="/privacy-policy" className="hover:text-gray-400">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-gray-400">Terms of Service</Link>
             <Link to="#" className="hover:text-gray-400">Cookie Settings</Link>
           </div>
         </div>
