@@ -169,6 +169,25 @@ export const ContactUs: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* FAQ Section Link */}
+                <div className="md:col-span-2 bg-blue-50 p-6 rounded-lg mt-4">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 className="text-xl font-semibold mb-2">Have a Question?</h2>
+                            <p className="text-gray-700">
+                                Before contacting us, you might find the answer in our Frequently Asked Questions section.
+                                We cover common topics about advertising, privacy, and editorial policies.
+                            </p>
+                        </div>
+                        <a
+                            href="/faq"
+                            className="bg-blue-600 text-white font-bold px-6 py-3 rounded hover:bg-blue-700 transition-colors whitespace-nowrap"
+                        >
+                            Visit FAQ Center
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     );

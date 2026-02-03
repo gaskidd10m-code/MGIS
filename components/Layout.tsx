@@ -150,6 +150,9 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
             <ul className="text-sm text-gray-300 space-y-3">
               <li><Link to="/about" className="hover:text-white hover:underline decoration-red-700 underline-offset-4 transition-all">About</Link></li>
               <li><Link to="/contact" className="hover:text-white hover:underline decoration-red-700 underline-offset-4 transition-all">Contact</Link></li>
+              <li><Link to="/careers" className="hover:text-white hover:underline decoration-red-700 underline-offset-4 transition-all">Careers</Link></li>
+              <li><Link to="/advertise" className="hover:text-white hover:underline decoration-red-700 underline-offset-4 transition-all">Advertise</Link></li>
+              <li><Link to="/faq" className="hover:text-white hover:underline decoration-red-700 underline-offset-4 transition-all">FAQ</Link></li>
             </ul>
           </div>
 
@@ -172,6 +175,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
           <div className="flex gap-6 mt-4 md:mt-0">
             <Link to="/privacy-policy" className="hover:text-gray-400">Privacy Policy</Link>
             <Link to="/terms-of-service" className="hover:text-gray-400">Terms of Service</Link>
+            <Link to="/editorial-guidelines" className="hover:text-gray-400">Editorial Guidelines</Link>
+            <Link to="/community-guidelines" className="hover:text-gray-400">Community Guidelines</Link>
             <Link to="#" className="hover:text-gray-400">Cookie Settings</Link>
           </div>
         </div>

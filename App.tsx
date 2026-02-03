@@ -13,6 +13,14 @@ import { CategoryPage } from './pages/CategoryPage';
 import { AboutUs } from './pages/AboutUs';
 import { ContactUs } from './pages/ContactUs';
 import { AuthorPage } from './pages/AuthorPage';
+import { EditorialGuidelines } from './pages/EditorialGuidelines';
+import { FAQ } from './pages/FAQ';
+import { AdvertiseWithUs } from './pages/AdvertiseWithUs';
+import { Careers } from './pages/Careers';
+import { CommunityGuidelines } from './pages/CommunityGuidelines';
+import { ArchivePage } from './pages/ArchivePage';
+import { TagsPage } from './pages/TagsPage';
+import { AuthorDirectory } from './pages/AuthorDirectory';
 import { api } from './services/api';
 import { Category } from './types';
 
@@ -35,11 +43,14 @@ const App: React.FC = () => {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/author/:slug" element={<AuthorPage />} />
+            <Route path="/editorial-guidelines" element={<EditorialGuidelines />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/advertise" element={<AdvertiseWithUs />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/community-guidelines" element={<CommunityGuidelines />} />
+            <Route path="/archive" element={<ArchivePage />} />
+            <Route path="/tags" element={<TagsPage />} />
+            <Route path="/authors" element={<AuthorDirectory />} />
           </Routes>
         </Layout>
       </BrowserRouter>

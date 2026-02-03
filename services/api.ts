@@ -56,8 +56,36 @@ export const api = {
   },
 
   // GET /api/authors
-  getAllAuthors: async (): Promise<any[]> => {
+  getAllAuthors: async (): Promise<any[]> {
     const res = await fetch('/api/authors');
+    if (!res.ok) return [];
+    return res.json();
+  },
+
+  // --- TAGS (New) ---
+  getTags: async (): Promise<string[]> {
+    const res = await fetch('/api/tags');
+    if (!res.ok) return [];
+    return res.json();
+  },
+
+  getArticlesByTag: async (tag: string): Promise<Article[]> {
+    const res = await fetch(`/api/articles?tag=${encodeURIComponent(tag)}`);
+    if (!res.ok) return [];
+    return res.json();
+  },
+
+  // --- ARCHIVE (New) ---
+  getArchiveDates: async (): Promise<{ year: number, month: number, count: number }[]> {
+    const res = await fetch('/api/archive/dates');
+    if (!res.ok) return [];
+    return res.json();
+  },
+
+  getArticlesByDate: async (year: number, month?: number): Promise<Article[]> {
+    let url = `/api/articles?year=${year}`;
+    if (month) url += `&month=${month}`;
+    const res = await fetch(url);
     if (!res.ok) return [];
     return res.json();
   },
@@ -94,10 +122,6 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    // The server currently returns { success: true } but UI might expect article?
-    // Let's assume for now we just return the data passed merged, or refetch. 
-    // To keep it simple and safe, invalidating query is better, but here we return input data as mock.
-    // Ideally update server to return updated article.
     return { ...data, id } as Article;
   },
 

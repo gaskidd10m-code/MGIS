@@ -257,6 +257,58 @@ const db = {
             [authorSlug]
         );
         return result.map(mapArticle);
+    },
+
+    // Archive & Tags
+    async getArticlesByTag(tag: string): Promise<Article[]> {
+        const result = await executeSql(
+            `SELECT * FROM articles WHERE $1 = ANY(tags) ORDER BY published_at DESC`,
+            [tag]
+        );
+        return result.map(mapArticle);
+    },
+
+    async getArticlesByDate(year: number, month?: number): Promise<Article[]> {
+        let query = `SELECT * FROM articles WHERE EXTRACT(YEAR FROM published_at) = $1`;
+        const params: any[] = [year];
+
+        if (month) {
+            query += ` AND EXTRACT(MONTH FROM published_at) = $2`;
+            params.push(month);
+        }
+
+        query += ` ORDER BY published_at DESC`;
+        const result = await executeSql(query, params);
+        return result.map(mapArticle);
+    },
+
+    async getTags(): Promise<string[]> {
+        // Unnest tags and count distinct
+        const result = await executeSql(`
+            SELECT DISTINCT unnest(tags) as tag 
+            FROM articles 
+            WHERE status = 'published' 
+            ORDER BY tag ASC
+        `);
+        return result.map(r => r.tag);
+    },
+
+    async getArchiveDates(): Promise<{ year: number, month: number, count: number }[]> {
+        const result = await executeSql(`
+            SELECT 
+                EXTRACT(YEAR FROM published_at) as year,
+                EXTRACT(MONTH FROM published_at) as month,
+                COUNT(*) as count
+            FROM articles 
+            WHERE status = 'published'
+            GROUP BY year, month
+            ORDER BY year DESC, month DESC
+        `);
+        return result.map(r => ({
+            year: parseInt(r.year),
+            month: parseInt(r.month),
+            count: parseInt(r.count)
+        }));
     }
 };
 
@@ -300,6 +352,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return await handleSitemap(req, res);
         } else if (path.startsWith('/settings')) {
             return await handleSettings(req, res, path);
+        } else if (path.startsWith('/tags')) {
+            return await handleTags(req, res, path);
+        } else if (path.startsWith('/archive')) {
+            return await handleArchive(req, res, path);
         } else {
             res.status(404).json({ error: 'Not found' });
         }
@@ -313,7 +369,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 async function handleArticles(req: VercelRequest, res: VercelResponse, path: string) {
     const { method, query } = req;
 
-    // GET /articles or /articles?category=X or /articles?q=X
+    // GET /articles or /articles?category=X or /articles?q=X or tag, year, month
     if (method === 'GET' && path === '/articles') {
         if (query.category) {
             const articles = await db.getArticlesByCategory(query.category as string);
@@ -321,6 +377,16 @@ async function handleArticles(req: VercelRequest, res: VercelResponse, path: str
         }
         if (query.q) {
             const articles = await db.searchArticles(query.q as string);
+            return res.json(articles);
+        }
+        if (query.tag) {
+            const articles = await db.getArticlesByTag(query.tag as string);
+            return res.json(articles);
+        }
+        if (query.year) {
+            const year = parseInt(query.year as string);
+            const month = query.month ? parseInt(query.month as string) : undefined;
+            const articles = await db.getArticlesByDate(year, month);
             return res.json(articles);
         }
         const articles = await db.getArticles();
@@ -470,6 +536,25 @@ async function handleAuthors(req: VercelRequest, res: VercelResponse, path: stri
     res.status(404).json({ error: 'Not found' });
 }
 
+
+
+// --- TAGS HANDLERS ---
+async function handleTags(req: VercelRequest, res: VercelResponse, path: string) {
+    if (req.method === 'GET') {
+        const tags = await db.getTags();
+        return res.json(tags);
+    }
+    res.status(404).json({ error: 'Not found' });
+}
+
+// --- ARCHIVE HANDLERS ---
+async function handleArchive(req: VercelRequest, res: VercelResponse, path: string) {
+    if (req.method === 'GET' && path === '/archive/dates') {
+        const dates = await db.getArchiveDates();
+        return res.json(dates);
+    }
+    res.status(404).json({ error: 'Not found' });
+}
 
 // --- SITEMAP HANDLER ---
 async function handleSitemap(req: VercelRequest, res: VercelResponse) {
