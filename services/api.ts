@@ -56,33 +56,33 @@ export const api = {
   },
 
   // GET /api/authors
-  getAllAuthors: async (): Promise<any[]> {
+  getAllAuthors: async (): Promise<any[]> => {
     const res = await fetch('/api/authors');
     if (!res.ok) return [];
     return res.json();
   },
 
   // --- TAGS (New) ---
-  getTags: async (): Promise<string[]> {
+  getTags: async (): Promise<string[]> => {
     const res = await fetch('/api/tags');
     if (!res.ok) return [];
     return res.json();
   },
 
-  getArticlesByTag: async (tag: string): Promise<Article[]> {
+  getArticlesByTag: async (tag: string): Promise<Article[]> => {
     const res = await fetch(`/api/articles?tag=${encodeURIComponent(tag)}`);
     if (!res.ok) return [];
     return res.json();
   },
 
   // --- ARCHIVE (New) ---
-  getArchiveDates: async (): Promise<{ year: number, month: number, count: number }[]> {
+  getArchiveDates: async (): Promise<{ year: number, month: number, count: number }[]> => {
     const res = await fetch('/api/archive/dates');
     if (!res.ok) return [];
     return res.json();
   },
 
-  getArticlesByDate: async (year: number, month?: number): Promise<Article[]> {
+  getArticlesByDate: async (year: number, month?: number): Promise<Article[]> => {
     let url = `/api/articles?year=${year}`;
     if (month) url += `&month=${month}`;
     const res = await fetch(url);
