@@ -24,24 +24,24 @@ const ExpandableArticle: React.FC<ExpandableArticleProps> = ({ article, isExpand
   // Hero variant (large featured article)
   if (variant === 'hero') {
     return (
-      <div ref={contentRef} className="group cursor-pointer relative">
-        <div className="overflow-hidden mb-4 rounded-sm shadow-sm">
+      <div ref={contentRef} className="group relative">
+        <div className="overflow-hidden mb-6 rounded-sm shadow-md">
           <img src={article.coverImage} alt={article.title} className="w-full h-64 md:h-[500px] object-contain bg-gray-100 transition-transform duration-700 group-hover:scale-105" loading="lazy" />
         </div>
-        <div className="flex items-center gap-3 text-red-700 text-xs font-bold uppercase tracking-widest mb-3">
-          <span className="bg-red-50 px-2 py-1 rounded">{article.categoryName}</span>
+        <div className="flex items-center gap-3 text-red-700 text-xs font-bold uppercase tracking-widest mb-4">
+          <span className="bg-red-50 px-3 py-1.5 rounded">{article.categoryName}</span>
           <span className="text-gray-400">•</span>
           <span className="text-gray-500">{new Date(article.publishedAt).toLocaleDateString()}</span>
         </div>
-        <h2 className="font-serif text-3xl md:text-5xl font-black leading-tight mb-4">
+        <h2 className="font-serif text-3xl md:text-5xl font-black leading-tight mb-6">
           {article.title}
         </h2>
-        <p className="font-serif text-gray-600 leading-relaxed text-lg md:text-xl mb-4">
+        <div className={`font-serif text-gray-700 leading-relaxed text-lg md:text-xl mb-6 transition-all duration-500 ${isExpanded ? 'whitespace-pre-line' : ''}`}>
           {isExpanded ? article.content : article.excerpt}
-        </p>
+        </div>
         <button
           onClick={onToggle}
-          className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 font-bold text-sm uppercase tracking-widest hover:bg-red-700 transition-colors rounded-sm"
+          className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 font-bold text-sm uppercase tracking-widest hover:bg-red-700 transition-all duration-300 rounded-sm shadow-md hover:shadow-lg"
         >
           {isExpanded ? '← Read Less' : 'Read More →'}
         </button>
@@ -53,16 +53,16 @@ const ExpandableArticle: React.FC<ExpandableArticleProps> = ({ article, isExpand
   if (variant === 'card') {
     return (
       <div ref={contentRef} className="group block h-full flex flex-col">
-        <div className="overflow-hidden mb-4 rounded-sm">
+        <div className="overflow-hidden mb-4 rounded-sm shadow-sm">
           <img src={article.coverImage} className="w-full h-48 object-contain bg-gray-100 transition-transform duration-500 group-hover:scale-105" loading="lazy" />
         </div>
         <h4 className="font-serif font-bold text-xl mb-3 leading-tight flex-grow">{article.title}</h4>
-        <p className="text-sm text-gray-500 mb-3 leading-relaxed">
+        <div className={`text-sm text-gray-600 mb-4 leading-relaxed transition-all duration-500 ${isExpanded ? 'whitespace-pre-line' : ''}`}>
           {isExpanded ? article.content : `${article.excerpt.substring(0, 100)}...`}
-        </p>
+        </div>
         <button
           onClick={onToggle}
-          className="text-xs text-black font-bold uppercase hover:underline text-left"
+          className="text-xs text-black font-bold uppercase hover:text-red-700 transition-colors text-left"
         >
           {isExpanded ? '↑ Read Less' : 'Read More →'}
         </button>
@@ -73,7 +73,7 @@ const ExpandableArticle: React.FC<ExpandableArticleProps> = ({ article, isExpand
   // Mobile variant
   if (variant === 'mobile') {
     return (
-      <div ref={contentRef} className="flex gap-4 py-4 border-b border-gray-100 last:border-0 group flex-col">
+      <div ref={contentRef} className="flex gap-4 py-5 border-b border-gray-100 last:border-0 group flex-col">
         <div className="flex gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
@@ -90,13 +90,13 @@ const ExpandableArticle: React.FC<ExpandableArticleProps> = ({ article, isExpand
           </div>
         </div>
         {isExpanded && (
-          <div className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line mt-2">
             {article.content}
           </div>
         )}
         <button
           onClick={onToggle}
-          className="text-xs text-red-700 font-bold uppercase text-left"
+          className="text-xs text-red-700 font-bold uppercase text-left hover:underline transition-all"
         >
           {isExpanded ? '↑ Read Less' : 'Read More →'}
         </button>
@@ -106,20 +106,20 @@ const ExpandableArticle: React.FC<ExpandableArticleProps> = ({ article, isExpand
 
   // List variant (default)
   return (
-    <div ref={contentRef} className="flex flex-col md:flex-row gap-6 items-start group border-b border-gray-100 pb-8 last:border-0 last:pb-0">
-      <div className="w-full md:w-64 h-40 flex-shrink-0 overflow-hidden rounded-sm">
+    <div ref={contentRef} className="flex flex-col md:flex-row gap-6 items-start group border-b border-gray-100 pb-8 mb-8 last:border-0 last:pb-0 last:mb-0">
+      <div className="w-full md:w-64 h-40 flex-shrink-0 overflow-hidden rounded-sm shadow-sm">
         <img src={article.coverImage} className="w-full h-full object-contain bg-gray-100 transition-transform duration-500 group-hover:scale-105" loading="lazy" />
       </div>
       <div className="flex-1">
         <span className="text-red-700 text-[10px] font-bold uppercase mb-2 block tracking-widest">{article.categoryName}</span>
-        <h4 className="font-serif font-bold text-2xl mb-3 leading-tight">{article.title}</h4>
-        <div className="text-sm text-gray-500 leading-relaxed mb-4 whitespace-pre-line">
+        <h4 className="font-serif font-bold text-2xl mb-4 leading-tight">{article.title}</h4>
+        <div className={`text-sm text-gray-700 leading-relaxed mb-4 transition-all duration-500 ${isExpanded ? 'whitespace-pre-line' : ''}`}>
           {isExpanded ? article.content : article.excerpt}
         </div>
-        <p className="text-xs text-gray-400 font-bold mb-3">By {article.authorName} • {new Date(article.publishedAt).toLocaleDateString()}</p>
+        <p className="text-xs text-gray-400 font-bold mb-4">By {article.authorName} • {new Date(article.publishedAt).toLocaleDateString()}</p>
         <button
           onClick={onToggle}
-          className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition-colors rounded-sm"
+          className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition-all duration-300 rounded-sm shadow-md hover:shadow-lg"
         >
           {isExpanded ? '← Read Less' : 'Read More →'}
         </button>

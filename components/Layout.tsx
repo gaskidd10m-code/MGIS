@@ -21,7 +21,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
     });
   }, []);
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -67,12 +66,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
           <nav className="hidden md:flex items-center gap-8 mx-8">
             <ul className="flex flex-row font-sans font-bold text-xs tracking-[0.2em] uppercase gap-8">
               <li><Link to="/" className="hover:text-red-700 transition-colors">Home</Link></li>
-              {categories.filter(c => c.name !== 'World News').map(cat => (
+              {categories.map(cat => (
                 <li key={cat.id}>
                   <Link to={`/category/${cat.slug}`} className="hover:text-red-700 transition-colors">{cat.name}</Link>
                 </li>
               ))}
-              {/* "More" dropdown removed */}
             </ul>
           </nav>
 
@@ -101,7 +99,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, categories }) => {
           <div className="container mx-auto px-6 py-4">
             <ul className="flex flex-col gap-4 font-sans font-bold text-xs tracking-[0.2em] uppercase">
               <li><Link to="/" onClick={closeMenu} className="hover:text-red-700 block transition-colors">Home</Link></li>
-              {categories.filter(c => c.name !== 'World News').map(cat => (
+              {categories.map(cat => (
                 <li key={cat.id}>
                   <Link to={`/category/${cat.slug}`} onClick={closeMenu} className="hover:text-red-700 block transition-colors">{cat.name}</Link>
                 </li>
