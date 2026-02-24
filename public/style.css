@@ -1,0 +1,129 @@
+/* Custom Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+.animate-slide-in-bottom {
+    animation: slideInFromBottom 0.8s ease-out;
+}
+
+.animate-slide-in-left {
+    animation: slideInFromLeft 0.8s ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slideInFromRight 0.8s ease-out;
+}
+
+/* Staggered animation delays */
+.delay-100 {
+    animation-delay: 100ms;
+}
+
+.delay-200 {
+    animation-delay: 200ms;
+}
+
+.delay-300 {
+    animation-delay: 300ms;
+}
+
+.delay-400 {
+    animation-delay: 400ms;
+}
+
+.delay-500 {
+    animation-delay: 500ms;
+}
+
+/* Hover animations */
+.hover-lift {
+    transition: transform 0.2s ease-out;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.hover-scale {
+    transition: transform 0.2s ease-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 767px) {
+    /* Mobile Menu Transitions */
+    #navbar-default {
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        transform-origin: top;
+    }
+
+    #navbar-default.hidden {
+        transform: scaleY(0.95);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #navbar-default:not(.hidden) {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+
+    /* Nicer mobile menu item styles */
+    #navbar-default ul a {
+        transition: background-color 0.2s ease-out, color 0.2s ease-out;
+    }
+
+    #navbar-default ul a:hover,
+    #navbar-default ul a:focus {
+        background-color: #f0f0f0; /* A light gray for hover */
+        color: #8B0000; /* brand-red */
+    }
+
+    #navbar-default ul a[aria-current="page"] {
+        background-color: #8B0000;
+        color: white;
+    }
+
+
+}

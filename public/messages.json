@@ -1,0 +1,16 @@
+[
+    {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "subject": "Admission Inquiry",
+        "message": "I would like to know more about the admission process for the next academic year.",
+        "date": "2025-11-05"
+    },
+    {
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "subject": "Question about extracurricular activities",
+        "message": "Are there any new extracurricular activities planned for the next semester?",
+        "date": "2025-11-04"
+    }
+]

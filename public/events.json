@@ -1,0 +1,20 @@
+[
+    {
+        "date": "SEP 15, 2024",
+        "title": "Annual Sports Day",
+        "description": "A day of fun, competition, and teamwork.",
+        "imageUrl": "logo.jpg"
+    },
+    {
+        "date": "OCT 20, 2024",
+        "title": "Parent-Teacher Conference",
+        "description": "Discuss student progress and collaborate for success.",
+        "imageUrl": "logo.jpg"
+    },
+    {
+        "date": "NOV 22, 2024",
+        "title": "Annual Science Fair",
+        "description": "Explore amazing projects by our talented students.",
+        "imageUrl": "logo.jpg"
+    }
+]
