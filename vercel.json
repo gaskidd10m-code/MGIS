@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "routes": [
+        { "src": "/api/events", "dest": "/api/get-events.js", "methods": ["GET"] },
+        { "src": "/api/events", "dest": "/api/update-events.js", "methods": ["POST"] }
+    ]
+}
